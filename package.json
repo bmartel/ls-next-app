@@ -1,6 +1,7 @@
 {
   "name": "ls-next-app",
   "version": "0.1.0",
+  "liscense": ISC,
   "private": true,
   "scripts": {
     "dev": "next dev",

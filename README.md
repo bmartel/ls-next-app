@@ -10,7 +10,7 @@ A guided tutorial on the ways to work with or integrate LabelStudio. (Maybe comi
 
 ## Latest published LabelStudio version `1.4.0`
 
-For ways to work with the existing stable version of LabelStudio frontend, please use the branch `ls-140`.
+For ways to work with the existing stable version of LabelStudio frontend, please use the branch `ls-140` (this branch).
 The code to run this is largely the same, but there are key differences not found in latest code on github.
 
 ### Getting Started
@@ -42,54 +42,12 @@ This is important to fix the issues with LabelStudio not mounting correctly, wit
 screen even if there are no other errors. (This is being worked on internally to fix the issues presented by this
 collision).
 
-## ⚠️ Experimental for those who live on cutting edge 😎   
-
-For those curious about what is coming up in the next releases, stick to the `main` branch. There are no guarantees
-about what may or may not work here and it may become broken at any time. Please proceed with patience and caution.
-
-### Getting Started
-
-First, install the modules.
-
-** NOTE: Due to a missing postinstall script this currently fails without skipping scripts on npm install **
-
-```bash
-npm install --ignore-scripts
-# or
-yarn install --ignore-scripts
-# or
-pnpm install --ignore-scripts
-```
-
-Then, run the server.
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-### Notes
-
-Due to differing versions of React in play between LabelStudio and NextJS, `reactStrictMode` has been set to `false`.
-This is important to fix the issues with LabelStudio not mounting correctly, without this you may be treated to a blank
-screen even if there are no other errors. (This is being worked on internally to fix the issues presented by this
-collision).
-
-There is a [middleware.ts](./middleware.ts) file containing a forward on the `/_next/static/js/` -> `/static/js/`, which
-enables the usage of the included `decode-audio.wasm` file for large audio support. The file can be found
-[here](./public/static/js/decode-audio.wasm).
-
-
 ## It's alive! 🥳
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-![LabelStudio with AudioConfig](./screenshots/ls-next-1.png)
-![LabelStudio with AudioConfig](./screenshots/ls-next-2.png)
-![LabelStudio with AudioConfig](./screenshots/ls-next-3.png)
+![LabelStudio with AudioConfig](./screenshots/ls-140-1.png)
+![LabelStudio with AudioConfig](./screenshots/ls-140-2.png)
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 

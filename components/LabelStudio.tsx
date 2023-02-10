@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useMemo } from "react"
-import '@martel/label-studio/build/static/css/main.css';
+import '@heartexlabs/label-studio/build/static/css/main.css';
 
 const Context = createContext(null)
 
@@ -49,8 +49,9 @@ const loadLabelStudio = async (config: LabelStudioConfig) => {
   window.APP_SETTINGS.feature_flags_default_value = true;
 
   // @ts-ignore
-  await import("@martel/label-studio");
+  await import("@heartexlabs/label-studio");
 
+  // @ts-ignore
   const LabelStudio = window.LabelStudio
 
   resolved = new LabelStudio('label-studio', config);
@@ -79,7 +80,7 @@ const useLabelStudioConfig = (config: LabelStudioConfig) => {
   return instance;
 }
 
-export default ({ children }: any) => {
+const LabelStudioProvider = ({ children }: any) => {
   const config = useMemo<LabelStudioConfig>(() => ({
     config: `
       <View>
@@ -190,3 +191,5 @@ export default ({ children }: any) => {
     </Context.Provider>
   )
 }
+
+export default LabelStudioProvider;

@@ -19,7 +19,7 @@ If you are looking to use the existing stable version of LabelStudio, please che
 
 First, install the modules.
 
-** NOTE: Due to a missing postinstall script this currently fails without skipping scripts on npm install **
+**NOTE: Due to a missing postinstall script this currently fails without skipping scripts on npm install**
 
 ```bash
 npm install --ignore-scripts

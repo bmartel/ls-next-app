@@ -8,7 +8,7 @@ A sample project outlining the basic steps to setup and run LabelStudio in a Nex
 
 A guided tutorial on the ways to work with or integrate LabelStudio. (Maybe coming in the future 🤔)
 
-## ⚠️ Experimental for those who live on cutting edge 😎 
+## ⚠️ Experimental for those who live on the cutting edge 😎 
 
 For those curious about what is coming up in the next releases, stick to the `main` branch (this branch). There are no guarantees
 about what may or may not work here and it may become broken at any time. Please proceed with patience and caution.

@@ -13,7 +13,7 @@ export class Sidebar extends Component<any> {
 
   findTarget() {
     if (!this.target) {
-      this.target = document.querySelector('.lsf-sidebar-tabs__content')
+      this.target = document.querySelector('.lsf-panel__content .lsf-details')
     }
   }
 

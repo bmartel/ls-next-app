@@ -8,44 +8,12 @@ A sample project outlining the basic steps to setup and run LabelStudio in a Nex
 
 A guided tutorial on the ways to work with or integrate LabelStudio. (Maybe coming in the future 🤔)
 
-## Latest published LabelStudio version `1.4.0`
+## ⚠️ Experimental for those who live on cutting edge 😎 
 
-For ways to work with the existing stable version of LabelStudio frontend, please use the branch `ls-140`.
-The code to run this is largely the same, but there are key differences not found in latest code on github.
-
-### Getting Started
-
-First, install the modules.
-
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-```
-
-Then, run the server.
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-### Notes
-
-Due to differing versions of React in play between LabelStudio and NextJS, `reactStrictMode` has been set to `false`.
-This is important to fix the issues with LabelStudio not mounting correctly, without this you may be treated to a blank
-screen even if there are no other errors. (This is being worked on internally to fix the issues presented by this
-collision).
-
-## ⚠️ Experimental for those who live on cutting edge 😎   
-
-For those curious about what is coming up in the next releases, stick to the `main` branch. There are no guarantees
+For those curious about what is coming up in the next releases, stick to the `main` branch (this branch). There are no guarantees
 about what may or may not work here and it may become broken at any time. Please proceed with patience and caution.
+
+If you are looking to use the existing stable version of LabelStudio, please checkout `ls-140` branch.
 
 ### Getting Started
 

@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, useEffect, useMemo } from "react"
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react"
 import '@heartexlabs/label-studio/build/static/css/main.css';
 
-const Context = createContext(null)
+const Context = createContext([] as any)
 
 type LabelStudioInterface =
   "panel" |
@@ -36,15 +36,15 @@ interface LabelStudioConfig {
   onLabelStudioLoad: (instance: any) => void;
 }
 
-export const useLabelStudio = () => useContext(Context)
+export const useLabelStudio = () => useContext(Context);
 
-let resolved: any = null
+let resolved: any = null;
 
-const loadLabelStudio = async (config: LabelStudioConfig) => {
+const loadLabelStudio = async () => {
   if (resolved) return resolved;
 
   // @ts-ignore
-  window.APP_SETTINGS = window.APP_SETTINGS || {}
+  window.APP_SETTINGS = window.APP_SETTINGS || {};
   // @ts-ignore
   window.APP_SETTINGS.feature_flags_default_value = true;
 
@@ -52,137 +52,45 @@ const loadLabelStudio = async (config: LabelStudioConfig) => {
   await import("@heartexlabs/label-studio");
 
   // @ts-ignore
-  const LabelStudio = window.LabelStudio
+  resolved = window.LabelStudio;
 
-  resolved = new LabelStudio('label-studio', config);
-
-  return resolved
+  return resolved;
 }
 
-const useLabelStudioConfig = (config: LabelStudioConfig) => {
-  const [instance, update] = useState<any>()
+const createLabelStudio = async (config: LabelStudioConfig, root = "label-studio") => {
+  const LabelStudio = await loadLabelStudio();
+
+  return new LabelStudio(root, config);
+}
+
+const useLabelStudioContext = (config?: LabelStudioConfig) => {
+  const instance = useRef<any>();
+  const [,update] = useState<any>();
+
+  const updateConfig = useCallback(async (config: LabelStudioConfig) => {
+
+    instance.current = await createLabelStudio(config);
+
+    update({});
+  }, []);
 
   useEffect(() => {
-    let ls: any;
-
-    loadLabelStudio(config).then((_ls: any) => {
-      ls = _ls
-      update(ls)
-    })
-
+    if (config) {
+      updateConfig(config);
+    }
     return () => {
       try {
-        ls?.destroy()
+        instance.current?.destroy();
       } catch { }
     }
-  }, [config])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config]);
 
-  return instance;
+  return [instance.current, updateConfig] as const;
 }
 
 const LabelStudioProvider = ({ children }: any) => {
-  const config = useMemo<LabelStudioConfig>(() => ({
-    config: `
-      <View>
-        <Header value="Select regions:"></Header>
-        <Labels name="label" toName="audio" choice="multiple">
-          <Label value="Beat" background="yellow"></Label>
-          <Label value="Voice" background="red"></Label>
-          <Label value="Guitar" background="blue"></Label>
-          <Label value="Other"></Label>
-        </Labels>
-        <Header value="Select genre:"></Header>
-        <Choices name="choice" toName="audio" choice="multiple">
-          <Choice value="Lo-Fi" />
-          <Choice value="Rock" />
-          <Choice value="Pop" />
-        </Choices>
-        <Header value="Listen the audio:"></Header>
-        <AudioPlus name="audio" value="$audio"></AudioPlus>
-      </View>
-    `,
-
-    interfaces: [
-      "panel",
-      "update",
-      "submit",
-      "controls",
-      "side-column",
-      "annotations:menu",
-      "annotations:add-new",
-      "annotations:delete",
-      "predictions:menu",
-    ],
-
-    user: {
-      pk: 1,
-      id: 1,
-      firstName: "James",
-      lastName: "Dean"
-    },
-
-    task: {
-      annotations: [
-        {
-          id: "abc",
-          result: [
-            {
-              from_name: 'choice',
-              id: 'hIj6zg57SY',
-              to_name: 'audio',
-              type: 'choices',
-              origin: 'manual',
-              value: {
-                choices: ['Lo-Fi'],
-              },
-            },
-            {
-              from_name: 'label',
-              id: 'SsGrpVgy_C',
-              to_name: 'audio',
-              original_length: 98.719925,
-              type: 'labels',
-              origin: 'manual',
-              value: {
-                channel: 0,
-                end: 28.50568583621215,
-                labels: ['Beat'],
-                start: 12.778410892095105,
-              },
-            },
-            {
-              from_name: 'label',
-              id: 'JhxupEJWlW',
-              to_name: 'audio',
-              original_length: 98.719925,
-              type: 'labels',
-              origin: 'manual',
-              value: {
-                channel: 1,
-                end: 59.39854733358493,
-                labels: ['Other'],
-                start: 55.747572792986325,
-              },
-            },
-          ]
-        }
-      ],
-      id: 1,
-      data: {
-        audio: 'https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/audio/barradeen-emotional.mp3',
-      },
-      predictions: []
-    },
-
-    onLabelStudioLoad: function(instance: any) {
-      console.log(instance)
-      const c = instance.annotationStore.addAnnotation({
-        userGenerate: true
-      });
-      instance.annotationStore.selectAnnotation(c.id);
-    }
-  }), [])
-  const labelstudio = useLabelStudioConfig(config)
+  const labelstudio = useLabelStudioContext()
 
   return (
     <Context.Provider value={labelstudio}>
